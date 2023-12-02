@@ -1,2 +1,3 @@
 # internship
-Repo for internship isues
+Repo for internship issues
+
