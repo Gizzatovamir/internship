@@ -8,7 +8,7 @@ Repo for internship issues
 
 ## Lidar Place Recognition
 
-[CASSOR](papers/LIDAR_place_recognition/casspr.md)
+[CASSPR](papers/LIDAR_place_recognition/casspr.md)
 
 [SeqOT](papers/LIDAR_place_recognition/seqot.md)
 
