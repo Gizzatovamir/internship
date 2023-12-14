@@ -39,7 +39,7 @@ Lidar scan -> range image (1)
 
 ## NETVLAD
 
-! - TODO: описать NETVLAD и MLP
+NetVlad
 
 
 ### Note
