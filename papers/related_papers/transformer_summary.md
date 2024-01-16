@@ -68,3 +68,5 @@
 
 ![img_1.png](../../images/img_18.png)
 
+# Стадия 2: multi-layer perceptron across features
+
