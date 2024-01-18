@@ -1,0 +1,77 @@
+data_root:
+  # path of reference range images in database sequence
+  range_image_database_root: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/range_image/depth/"
+  # path of query range images in query sequence
+  range_image_query_root: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/2012-02-05_range_image/depth/"
+
+
+training_seqot:
+  # index for training
+  traindata_file: "../data/more_chosen_normalized_data_120108.npy"
+  # poses file
+  poses_file: "../data/T_w_r_gt_velo_2012-01-08.npy"
+  # height of range images
+  height: 32
+  # width of range images
+  width: 900
+  # sequence length to generate sub-descriptors
+  seqlen: 10
+  # learning rate for training
+  lr: 0.0000005
+  # whether resuming from the pretrained model below
+  resume: False
+  # pretrained model
+  weights: "../data/pretrained_seqot.pth.tar"
+
+
+gen_sub_descriptors:
+  # sequence length to generate sub-descriptors
+  seqlen: 15
+  # pretrained model
+  weights: "../data/gem/pretrained_seqot.pth.tar"
+
+
+training_gem:
+  # index for training
+  traindata_file: "../data/more_chosen_normalized_data_120108.npy"
+  # poses file
+  poses_file: "../data/T_w_r_gt_velo_2012-01-08.npy"
+  # sub-descriptors of database for training
+  descriptors_file: "./des_list_database.npy"
+  # sequence length to generate final-descriptors
+  seqlen: 70
+  # learning rate for training
+  lr: 0.000005
+  # whether resuming from the pretrained model below
+  resume: True
+  # pretrained model
+  weights: "./amodel_gem.pth.tar"
+
+
+test_gem_prepare:
+  # sub-descriptors of database scans
+  sub_descriptors_database_file: "../train/des_list_database.npy"
+  # sub-descriptors of query scans
+  sub_descriptors_query_file: "../train/des_list_query.npy"
+  # sequence length to generate final-descriptors
+  seqlen: 20
+  # pretrained model
+  weights: "../data/pretrained_gem.pth.tar"
+
+test_seqot:
+  # ground truth
+  ground_truth_file: "../data_prepararion/gt_15dis.npy"
+
+viz:
+  # poses file of database
+  poses_database: "../data/T_w_r_gt_velo_2012-01-08.npy"
+  # poses file of query
+  poses_query: "../data/T_w_r_gt_velo_2012-02-05.npy"
+
+gen_training_index:
+  # poses file of database
+  poses_database: "../data/T_w_r_gt_velo_2012-01-08.npy"
+  # poses file of query
+  poses_query: "../data/T_w_r_gt_velo_2012-02-05.npy"
+  # path of reference .bin of database
+  scan_database_root: "../data/2012-01-08/velodyne_sync/"
