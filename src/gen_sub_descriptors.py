@@ -1,21 +1,20 @@
 import torch
 from models import featureExtracter
 import numpy as np
-import tqdm
+from tqdm import tqdm
 import os
 import yaml
 
 
-def read_one_need_from_seq(file_num, seq_len, poses=None, range_image_root=None):
+def read_one_need_from_seq(file_num:str, file_name:str, seq_len, poses=None, range_image_root=None):
     read_complete_flag = True
     depth_data_seq = torch.zeros((1, seq_len, 32, 900)).type(torch.FloatTensor).cuda()
     for i in np.arange(
         int(file_num) - (seq_len // 2), int(file_num) - (seq_len // 2) + seq_len
     ):
-        file_num_str = str(i).zfill(6)
-        if not os.path.exists(range_image_root + file_num_str + ".npy"):
+        if not os.path.exists(range_image_root + file_name + ".npy"):
             read_complete_flag = False
-            depth_data_tmp = np.load(range_image_root + file_num + ".npy")
+            depth_data_tmp = np.load(range_image_root + file_name + ".npy")
             depth_data_tensor_tmp = (
                 torch.from_numpy(depth_data_tmp).type(torch.FloatTensor).cuda()
             )
@@ -28,7 +27,7 @@ def read_one_need_from_seq(file_num, seq_len, poses=None, range_image_root=None)
                     :, int(m - int(file_num) + (seq_len // 2)), :, :
                 ] = depth_data_tensor_tmp
             return depth_data_seq, read_complete_flag
-        depth_data = np.load(range_image_root + file_num_str + ".npy")
+        depth_data = np.load(range_image_root + file_name + ".npy")
         depth_data_tensor = torch.from_numpy(depth_data).type(torch.FloatTensor).cuda()
         depth_data_tensor = torch.unsqueeze(depth_data_tensor, dim=0)
         depth_data_tensor = torch.unsqueeze(depth_data_tensor, dim=0)
@@ -77,36 +76,41 @@ class Gen:
         interval = 1
 
         scan_paths_database = load_files(self.range_image_database_root)
-        print("the number of reference scans ", len(scan_paths_database))
+        print("the number of reference scans ", len(scan_paths_database), scan_paths_database[0])
         des_list = np.zeros((int(len(scan_paths_database) // interval) + 1, 256))
-        for j in tqdm(np.arange(0, len(scan_paths_database), interval)):
+        for index, timestamp in enumerate([el.split(".")[-2].split('/')[-1] for el in scan_paths_database]):
             current_batch, read_complete_flag = read_one_need_from_seq(
-                str(j).zfill(6),
+                str(index),
+                str(timestamp),
                 self.seq_len,
                 range_image_root=self.range_image_database_root,
             )
             self.amodel.eval()
             current_batch_des = self.amodel(current_batch)
-            des_list[int(j // interval), :] = (
+            des_list[int(index // interval), :] = (
                 current_batch_des[0, :].cpu().detach().numpy()
             )
+            del current_batch
         des_list = des_list.astype("float32")
         np.save("des_list_database", des_list)
 
         scan_paths_query = load_files(self.range_image_query_root)
         print("the number of query scans ", len(scan_paths_query))
         des_list_query = np.zeros((int(len(scan_paths_query) // interval) + 1, 256))
-        for j in tqdm(np.arange(0, len(scan_paths_query), interval)):
+        for index, timestamp in enumerate([el.split(".")[-2].split('/')[-1] for el in scan_paths_query]):
+            print(timestamp)
             current_batch, read_complete_flag = read_one_need_from_seq(
-                str(j).zfill(6),
+                str(index),
+                str(timestamp),
                 self.seq_len,
                 range_image_root=self.range_image_query_root,
             )
             self.amodel.eval()
             current_batch_des = self.amodel(current_batch)
-            des_list_query[int(j // interval), :] = (
+            des_list_query[int(index // interval), :] = (
                 current_batch_des[0, :].cpu().detach().numpy()
             )
+            del current_batch
         des_list_query = des_list_query.astype("float32")
         np.save("des_list_query", des_list_query)
 

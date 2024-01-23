@@ -1,8 +1,8 @@
 data_root:
   # path of reference range images in database sequence
-  range_image_database_root: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/range_image/depth/"
+  range_image_database_root: "/home/amir/Desktop/pet_projects/internship/test_depth/"
   # path of query range images in query sequence
-  range_image_query_root: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/2012-02-05_range_image/depth/"
+  range_image_query_root: "/home/amir/Desktop/pet_projects/internship/eval_depth/"
 
 
 training_seqot:
@@ -28,7 +28,7 @@ gen_sub_descriptors:
   # sequence length to generate sub-descriptors
   seqlen: 15
   # pretrained model
-  weights: "../data/gem/pretrained_seqot.pth.tar"
+  weights: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/pretrained_seqot.pth.tar"
 
 
 training_gem:
