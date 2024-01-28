@@ -26,7 +26,7 @@ training_seqot:
 
 gen_sub_descriptors:
   # sequence length to generate sub-descriptors
-  seqlen: 15
+  seqlen: 5
   # pretrained model
   weights: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/pretrained_seqot.pth.tar"
 

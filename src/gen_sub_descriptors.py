@@ -94,25 +94,25 @@ class Gen:
         des_list = des_list.astype("float32")
         np.save("des_list_database", des_list)
 
-        scan_paths_query = load_files(self.range_image_query_root)
-        print("the number of query scans ", len(scan_paths_query))
-        des_list_query = np.zeros((int(len(scan_paths_query) // interval) + 1, 256))
-        for index, timestamp in enumerate([el.split(".")[-2].split('/')[-1] for el in scan_paths_query]):
-            print(timestamp)
-            current_batch, read_complete_flag = read_one_need_from_seq(
-                str(index),
-                str(timestamp),
-                self.seq_len,
-                range_image_root=self.range_image_query_root,
-            )
-            self.amodel.eval()
-            current_batch_des = self.amodel(current_batch)
-            des_list_query[int(index // interval), :] = (
-                current_batch_des[0, :].cpu().detach().numpy()
-            )
-            del current_batch
-        des_list_query = des_list_query.astype("float32")
-        np.save("des_list_query", des_list_query)
+        # scan_paths_query = load_files(self.range_image_query_root)
+        # print("the number of query scans ", len(scan_paths_query))
+        # des_list_query = np.zeros((int(len(scan_paths_query) // interval) + 1, 256))
+        # for index, timestamp in enumerate([el.split(".")[-2].split('/')[-1] for el in scan_paths_query]):
+        #     print(timestamp)
+        #     current_batch, read_complete_flag = read_one_need_from_seq(
+        #         str(index),
+        #         str(timestamp),
+        #         self.seq_len,
+        #         range_image_root=self.range_image_query_root,
+        #     )
+        #     self.amodel.eval()
+        #     current_batch_des = self.amodel(current_batch)
+        #     des_list_query[int(index // interval), :] = (
+        #         current_batch_des[0, :].cpu().detach().numpy()
+        #     )
+        #     del current_batch
+        # des_list_query = des_list_query.astype("float32")
+        # np.save("des_list_query", des_list_query)
 
 
 if __name__ == "__main__":

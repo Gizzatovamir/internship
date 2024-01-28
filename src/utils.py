@@ -1,5 +1,6 @@
 import open3d as o3d
 import numpy as np
+import torch
 
 
 def numpy_cloud_to_open3d(xyz: np.ndarray):
@@ -16,3 +17,17 @@ def visualize_cloud(xyz: np.ndarray, colors=None):
 
     o3d.visualization.draw_geometries([pcd])
 
+
+def read_one_need_descriptor_from_seq_ft(file_num, descriptors, seq_len, poses=None):
+    read_complete_flag = True
+    descriptors_seq = torch.zeros((1, seq_len, 256)).type(torch.FloatTensor).cuda()
+    for i in np.arange(int(file_num)-(seq_len//2), int(file_num)-(seq_len//2)+seq_len):  # length can be changed !!!!!!!
+        if i<0 or i>=descriptors.shape[0]:
+            read_complete_flag = False
+            for m in np.arange(int(file_num) - (seq_len // 2), int(file_num) - (seq_len // 2) + seq_len):
+                descriptors_seq[0, int(m - int(file_num) + (seq_len // 2)), :] = torch.from_numpy(descriptors[int(file_num),:]).type(torch.FloatTensor).cuda()
+            return descriptors_seq, read_complete_flag
+        descriptor_tensor = torch.from_numpy(descriptors[i,:]).type(torch.FloatTensor).cuda()
+        descriptors_seq[0,int(i-int(file_num)+(seq_len//2)),:] = descriptor_tensor
+
+    return descriptors_seq, read_complete_flag
