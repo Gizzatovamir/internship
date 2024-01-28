@@ -11,6 +11,7 @@ def visualize(data: pd.DataFrame) -> None:
     fig = go.Figure()
     print(data.columns)
     fig.add_trace(go.Scatter(x=data['px'], y=data['py'], mode="markers", text=data['# timestamp_in_seconds']))
+    fig.add_trace(go.Scatter(x=data['qx'], y=data['qy'], mode="markers", text=data['qw']))
     fig.show()
 
 

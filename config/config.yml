@@ -28,7 +28,7 @@ gen_sub_descriptors:
   # sequence length to generate sub-descriptors
   seqlen: 5
   # pretrained model
-  weights: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/pretrained_seqot.pth.tar"
+  weights: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/gem/pretrained_seqot.pth.tar"
 
 
 training_gem:
@@ -45,18 +45,18 @@ training_gem:
   # whether resuming from the pretrained model below
   resume: True
   # pretrained model
-  weights: "./amodel_gem.pth.tar"
+  weights: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/gem/pretrained_gem.pth.tar"
 
 
 test_gem_prepare:
   # sub-descriptors of database scans
-  sub_descriptors_database_file: "../train/des_list_database.npy"
+  sub_descriptors_database_file: "/home/amir/Desktop/pet_projects/internship/src/des_list_database.npy"
   # sub-descriptors of query scans
   sub_descriptors_query_file: "../train/des_list_query.npy"
   # sequence length to generate final-descriptors
   seqlen: 20
   # pretrained model
-  weights: "../data/pretrained_gem.pth.tar"
+  weights: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/gem/pretrained_gem.pth.tar"
 
 test_seqot:
   # ground truth
