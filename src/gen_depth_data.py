@@ -1,7 +1,10 @@
 import os
 import pathlib
 import sqlite3
-from src.read_log import read_one_msg
+from read_log import read_one_msg
+from utils.read_data import get_parser
+from query import query_get_one_msg
+import utils.constants as constants
 
 import numpy as np
 
@@ -108,7 +111,6 @@ def range_projection(
     return proj_range, proj_vertex, proj_idx
 
 
-
 def data2xyzi(data, flip=True):
     xyzil = data.view(velodatatype)
     xyz = np.hstack([xyzil[axis].reshape([-1, 1]) for axis in ["x", "y", "z"]])
@@ -173,3 +175,16 @@ def gen_depth_data(
         np.save(dst_path, proj_range)
         # depths.append(proj_range)
         print("finished generating depth data at: ", dst_path)
+
+
+if __name__ == "__main__":
+    parser = get_parser(path="--path")
+    args = parser.parse_args()
+    dir_path = pathlib.Path(str(args.path))
+    db = sqlite3.connect(dir_path.as_posix())
+    cursor = db.cursor()
+    gen_depth_data(
+         db.cursor(),
+         pathlib.Path("./eval_depth/"),
+         query_get_one_msg(constants.LIDAR_POINTS_TOPIC_ID),
+    )

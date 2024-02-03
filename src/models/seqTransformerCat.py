@@ -11,7 +11,7 @@ import numpy as np
 import sys
 
 sys.path.append("../tools/")
-from models import NetVLADLoupe
+from models.netvlad import NetVLADLoupe
 import torch.nn.functional as F
 
 

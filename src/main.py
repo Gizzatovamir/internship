@@ -4,9 +4,7 @@ from src.read_log import read_one_msg
 from src.gen_depth_data import gen_depth_data
 from src.query import query_get_one_msg
 from rosbags.serde import deserialize_cdr
-
-LIDAR_POINTS_TOPIC_ID = 8
-UTM_TOPIC_ID = 1
+import utils.constants as constants
 
 
 # utf8 codec error
@@ -14,7 +12,7 @@ UTM_TOPIC_ID = 1
 
 
 def get_utm_pos(_db: sqlite3.Cursor, destination_path: pathlib.Path) -> None:
-    timestamp, utm_ros_msg = _db.execute(query_get_one_msg(UTM_TOPIC_ID)).fetchone()
+    timestamp, utm_ros_msg = _db.execute(query_get_one_msg(constants.UTM_TOPIC_ID)).fetchone()
     utm = deserialize_cdr(utm_ros_msg, "nav_msgs/msg/Odometry")
     print(timestamp, utm)
 
