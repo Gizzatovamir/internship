@@ -13,4 +13,4 @@ COPY src ./src
 WORKDIR src
 RUN poetry install
 
-CMD ["python3"]
+CMD ["make"]

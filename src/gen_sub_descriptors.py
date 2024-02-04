@@ -1,9 +1,11 @@
+import argparse
+
 import torch
-from models import featureExtracter
+from models.seqTransformerCat import featureExtracter
 import numpy as np
-from tqdm import tqdm
 import os
 import yaml
+from utils.read_data import get_parser
 
 
 def read_one_need_from_seq(file_num:str, file_name:str, seq_len, poses=None, range_image_root=None):
@@ -117,8 +119,13 @@ class Gen:
 
 if __name__ == "__main__":
     # abs path
-    config_filename = "/home/amir/Desktop/pet_projects/internship/config/config.yml"
-    config = yaml.safe_load(open(config_filename))
+    info_dict = {
+        "help": 'path to config',
+        'type': str
+    }
+    parser = get_parser("--cfg", **info_dict)
+    args = parser.parse_args()
+    config = yaml.safe_load(open(args.cfg))
     seqlen = config["gen_sub_descriptors"]["seqlen"]
     pretrained_weights = config["gen_sub_descriptors"]["weights"]
     range_image_database_root = config["data_root"]["range_image_database_root"]

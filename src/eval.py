@@ -6,7 +6,7 @@ import torch
 from utils import read_data, vis_utils
 import yaml
 import matplotlib.pyplot as plt
-from typing import List
+from typing import List, Dict
 import faiss
 
 
@@ -57,14 +57,16 @@ class Predict:
     def create_value_seq(self, test_path: pathlib.Path) -> np.ndarray:
         self.load_feature_extracter()
         depth_data_seq = self.gen_depth_data_seq(test_path)
-        des_list: torch.FloatTensor = torch.zeros((1,len(depth_data_seq), 256)).type(torch.FloatTensor).cuda()
+        des_list: torch.FloatTensor = (
+            torch.zeros((1, len(depth_data_seq), 256)).type(torch.FloatTensor).cuda()
+        )
         for index, depath_data in enumerate(depth_data_seq):
             current_batch_des = self.extracter_model(depth_data_seq)
             current_batch_des = current_batch_des.squeeze(1)
             des_list[index] = current_batch_des
         del self.feature_ex_weights
         # self.feature_ex_weights = featureExtracter().to(self.device)
-        return self.model(des_list).squeeze(1)[0,:].cpu().detach().numpy()
+        return self.model(des_list).squeeze(1)[0, :].cpu().detach().numpy()
 
     def get_descriptor_list(self) -> np.ndarray:
         descriptors_list = np.zeros((int(self.descriptors.shape[0]), 256))
@@ -97,21 +99,22 @@ class Predict:
         index.add(des_list)
         eval_seq_descriptors = self.create_value_seq(eval_dir_path)
         D, I = index.search(eval_seq_descriptors.reshape(1, -1), k)
-        plt.imshow(D)
-        plt.show()
-
+        # plt.imshow(D)
+        # plt.show()
 
 
 if __name__ == "__main__":
-    config_filename: str = (
-        "/home/amir/Desktop/pet_projects/internship/config/config.yml"
-    )
-    config: dict = yaml.safe_load(open(config_filename))
+    info_dict_list: List[Dict[str, str]] = [{"help": "path to cfg", "type": str}]
+    parser = read_data.get_parser(["--cfg"], info_dict_list)
+    args = parser.parse_args()
+    config: dict = yaml.safe_load(open(args.cfg))
     seqlen: int = int(config["gen_sub_descriptors"]["seqlen"])
     pretrained_weights: pathlib.Path = pathlib.Path(
         config["test_gem_prepare"]["weights"]
     )
-    feature_ex_pretrained_weights: pathlib.Path = pathlib.Path(config["gen_sub_descriptors"]["weights"])
+    feature_ex_pretrained_weights: pathlib.Path = pathlib.Path(
+        config["gen_sub_descriptors"]["weights"]
+    )
     range_image_database_root: pathlib.Path = pathlib.Path(
         config["data_root"]["range_image_database_root"]
     )
@@ -124,5 +127,7 @@ if __name__ == "__main__":
         feature_extracter_weights=feature_ex_pretrained_weights,
         descriptors_path=descriptors_path,
     )
-    eval_dir: pathlib.Path = pathlib.Path('/home/amir/Desktop/pet_projects/internship/to_test')
+    eval_dir: pathlib.Path = pathlib.Path(
+        "/home/amir/Desktop/pet_projects/internship/to_test"
+    )
     eval_claass.eval(eval_dir)

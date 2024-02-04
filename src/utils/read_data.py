@@ -1,7 +1,7 @@
 import argparse
 import pathlib
 import numpy as np
-from typing import List
+from typing import List, Dict
 import torch
 
 
@@ -75,8 +75,8 @@ def read_descriptors(index_in_db_dir, descriptors, seq_len) -> torch.Tensor:
     return descriptors_seq
 
 
-def get_parser(**kwargs) -> argparse.ArgumentParser:
+def get_parser(flag_str_list: List[str], info_list: List[Dict[str, str]]) -> argparse.ArgumentParser:
     parser: argparse.ArgumentParser = argparse.ArgumentParser()
-    for arg in kwargs.values():
-        parser.add_argument(f'{arg}')
+    for flag, arg_dict in zip(flag_str_list, info_list):
+        parser.add_argument(flag, **arg_dict)
     return parser

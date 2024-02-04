@@ -5,6 +5,9 @@ from read_log import read_one_msg
 from utils.read_data import get_parser
 from query import query_get_one_msg
 import utils.constants as constants
+from typing import Dict, List
+import pandas as pd
+
 
 import numpy as np
 
@@ -178,13 +181,17 @@ def gen_depth_data(
 
 
 if __name__ == "__main__":
-    parser = get_parser(path="--path")
+    info_dict: List[Dict[str, str]] = [{
+        "help": 'path to db',
+        'type': str
+    }]
+    parser = get_parser(["--path"], info_dict)
     args = parser.parse_args()
     dir_path = pathlib.Path(str(args.path))
     db = sqlite3.connect(dir_path.as_posix())
     cursor = db.cursor()
     gen_depth_data(
          db.cursor(),
-         pathlib.Path("./eval_depth/"),
+         pathlib.Path("./data/depth_data/"),
          query_get_one_msg(constants.LIDAR_POINTS_TOPIC_ID),
     )
