@@ -1,8 +1,8 @@
 data_root:
   # path of reference range images in database sequence
-  range_image_database_root: "/home/amir/Desktop/pet_projects/internship/test_depth/"
+  range_image_database_root: "./test_depth/"
   # path of query range images in query sequence
-  range_image_query_root: "/home/amir/Desktop/pet_projects/internship/eval_depth/"
+  range_image_query_root: "./eval_depth/"
 
 
 training_seqot:
@@ -28,7 +28,7 @@ gen_sub_descriptors:
   # sequence length to generate sub-descriptors
   seqlen: 5
   # pretrained model
-  weights: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/gem/pretrained_seqot.pth.tar"
+  weights: "./data/seqot.pth.tar"
 
 
 training_gem:
@@ -45,12 +45,12 @@ training_gem:
   # whether resuming from the pretrained model below
   resume: True
   # pretrained model
-  weights: "/home/amir/Desktop/pet_projects/internship/SeqOT/data/gem/pretrained_gem.pth.tar"
+  weights: "./data/gem.pth.tar"
 
 
 test_gem_prepare:
   # sub-descriptors of database scans
-  sub_descriptors_database_file: "/home/amir/Desktop/pet_projects/internship/src/des_list_database.npy"
+  sub_descriptors_database_file: "./des_list_database.npy"
   # sub-descriptors of query scans
   sub_descriptors_query_file: "../train/des_list_query.npy"
   # sequence length to generate final-descriptors
