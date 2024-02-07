@@ -15,7 +15,7 @@ docker_build:
 	docker build -t seqot -f Docker/Dockerfile .
 
 docker_run:
-	docker run -v data:/src/data --gpus "device=0" seqot
+	docker run -v data:/src/data --gpus "device=0" --name seqot_container seqot
 
 local: gen_depth_data gen_sub_descriptors eval
 
