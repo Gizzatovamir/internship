@@ -24,6 +24,7 @@ rosbags = "0.9.19"
 pyquaternion = "^0.9.9"
 gtsam = "^4.2"
 gdown = "^5.1.0"
+genpy = "^2022.1"
 
 
 [build-system]

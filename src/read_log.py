@@ -1,5 +1,7 @@
 from rosbags.serde import deserialize_cdr
-from sensor_msgs.msg import CompressedImage, Image, PointCloud2, PointField
+# from sensor_msgs.msg import CompressedImage, Image, PointCloud2, PointField
+from ros_utils._PointCloud2 import PointCloud2
+from ros_utils._PointField import PointField
 from utils.data import Lidar
 import numpy as np
 from numpy.lib.recfunctions import structured_to_unstructured

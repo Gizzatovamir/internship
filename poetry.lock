@@ -500,6 +500,20 @@ tqdm = "*"
 test = ["build", "mypy", "pytest", "pytest-xdist", "ruff", "twine", "types-requests"]
 
 [[package]]
+name = "genpy"
+version = "2022.1"
+description = "AST-based generation of Python source code"
+optional = false
+python-versions = "~=3.6"
+files = [
+    {file = "genpy-2022.1.tar.gz", hash = "sha256:14665b4255206c98e7ba20da292fef565ada315985175700424ed2dda3d65f1e"},
+]
+
+[package.dependencies]
+numpy = ">=1.6"
+pytools = ">=2015.1.2"
+
+[[package]]
 name = "gtsam"
 version = "4.2"
 description = "Georgia Tech Smoothing And Mapping library"
@@ -1480,6 +1494,24 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "pytools"
+version = "2023.1.1"
+description = "A collection of tools for Python"
+optional = false
+python-versions = "~=3.8"
+files = [
+    {file = "pytools-2023.1.1-py2.py3-none-any.whl", hash = "sha256:53b98e5d6c01a90e343f8be2f5271e94204a210ef3e74fbefa3d47ec7480f150"},
+    {file = "pytools-2023.1.1.tar.gz", hash = "sha256:80637873d206f6bcedf7cdb46ad93e868acb4ea2256db052dfcca872bdd0321f"},
+]
+
+[package.dependencies]
+platformdirs = ">=2.2.0"
+typing-extensions = {version = ">=4.0", markers = "python_version < \"3.11\""}
+
+[package.extras]
+numpy = ["numpy (>=1.6.0)"]
+
+[[package]]
 name = "pytz"
 version = "2024.1"
 description = "World timezone definitions, modern and historical"
@@ -2289,4 +2321,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.2"
-content-hash = "fa0e82415eb655c611fdaf576d47a25ee7ad1b6dc7b558858e9f3a8e4f458311"
+content-hash = "38e96e13d57236f72f80997f6e72bfc05f75e91add32e4682f0bda4322265bfc"
