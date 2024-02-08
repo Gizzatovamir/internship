@@ -138,10 +138,9 @@ def gen_depth_data(
     """Generate projected range data in the shape of (64, 900, 1).
     The input raw data are in the shape of (Num_points, 3).
     """
-    try:
-        os.stat(dst_folder)
+    if dst_folder.exists():
         print("generating depth data in: ", dst_folder)
-    except:
+    else:
         print("creating new depth folder: ", dst_folder)
         os.mkdir(dst_folder)
 
@@ -181,17 +180,17 @@ def gen_depth_data(
 
 
 if __name__ == "__main__":
-    info_dict: List[Dict[str, str]] = [{
-        "help": 'path to db',
-        'type': str
-    }]
-    parser = get_parser(["--path"], info_dict)
+    info_dict: List[Dict[str, str]] = [
+        {"help": "path to db", "type": str},
+        {"help": "path to result", "type": str},
+    ]
+    parser = get_parser(["--path", "--dst_path"], info_dict)
     args = parser.parse_args()
     dir_path = pathlib.Path(str(args.path))
     db = sqlite3.connect(dir_path.as_posix())
     cursor = db.cursor()
     gen_depth_data(
-         db.cursor(),
-         pathlib.Path("./data/depth_data/"),
-         query_get_one_msg(constants.LIDAR_POINTS_TOPIC_ID),
+        db.cursor(),
+        pathlib.Path(args.dst_path),
+        query_get_one_msg(constants.LIDAR_POINTS_TOPIC_ID),
     )

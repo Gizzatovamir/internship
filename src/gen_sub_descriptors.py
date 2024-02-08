@@ -1,4 +1,5 @@
 import argparse
+import pathlib
 
 import torch
 from models.seqTransformerCat import featureExtracter
@@ -8,7 +9,9 @@ import yaml
 from utils.read_data import get_parser
 
 
-def read_one_need_from_seq(file_num:str, file_name:str, seq_len, poses=None, range_image_root=None):
+def read_one_need_from_seq(
+    file_num: str, file_name: str, seq_len, poses=None, range_image_root=None
+):
     read_complete_flag = True
     depth_data_seq = torch.zeros((1, seq_len, 32, 900)).type(torch.FloatTensor).cuda()
     for i in np.arange(
@@ -69,7 +72,7 @@ class Gen:
         self.range_image_database_root = range_image_database_root
         self.range_image_query_root = range_image_query_root
 
-    def eval(self):
+    def eval(self, dst_folder: pathlib.Path):
         resume_filename = self.weights
         print("Resuming From ", resume_filename)
         checkpoint = torch.load(resume_filename)
@@ -78,9 +81,15 @@ class Gen:
         interval = 1
 
         scan_paths_database = load_files(self.range_image_database_root)
-        print("the number of reference scans ", len(scan_paths_database), scan_paths_database[0])
+        print(
+            "the number of reference scans ",
+            len(scan_paths_database),
+            scan_paths_database[0],
+        )
         des_list = np.zeros((int(len(scan_paths_database) // interval) + 1, 256))
-        for index, timestamp in enumerate([el.split(".")[-2].split('/')[-1] for el in scan_paths_database]):
+        for index, timestamp in enumerate(
+            [el.split(".")[-2].split("/")[-1] for el in scan_paths_database]
+        ):
             current_batch, read_complete_flag = read_one_need_from_seq(
                 str(index),
                 str(timestamp),
@@ -94,7 +103,7 @@ class Gen:
             )
             del current_batch
         des_list = des_list.astype("float32")
-        np.save("des_list_database", des_list)
+        np.save(dst_folder.as_posix() + "des_list_database", des_list)
 
         # scan_paths_query = load_files(self.range_image_query_root)
         # print("the number of query scans ", len(scan_paths_query))
@@ -119,11 +128,11 @@ class Gen:
 
 if __name__ == "__main__":
     # abs path
-    info_dict = {
-        "help": 'path to config',
-        'type': str
-    }
-    parser = get_parser("--cfg", **info_dict)
+    info_dict = [
+        {"help": "path to config", "type": str},
+        {"help": "result destination path", "type": str},
+    ]
+    parser = get_parser(["--cfg", "--dst_path"], info_dict)
     args = parser.parse_args()
     config = yaml.safe_load(open(args.cfg))
     seqlen = config["gen_sub_descriptors"]["seqlen"]

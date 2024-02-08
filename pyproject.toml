@@ -24,7 +24,10 @@ rosbags = "0.9.19"
 pyquaternion = "^0.9.9"
 gtsam = "^4.2"
 gdown = "^5.1.0"
-genpy = "^2022.1"
+catkin-pkg = {git = "https://github.com/ros-infrastructure/catkin_pkg.git"}
+#genmsg = {git="https://github.com/ros/genmsg.git", branch="kinetic-devel"}
+#genpy = {git="https://github.com/ros/genpy.git", branch='main'}
+pyros-genmsg = "^0.5.8"
 
 
 [build-system]

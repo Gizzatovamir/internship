@@ -99,6 +99,8 @@ class Predict:
         index.add(des_list)
         eval_seq_descriptors = self.create_value_seq(eval_dir_path)
         D, I = index.search(eval_seq_descriptors.reshape(1, -1), k)
+        np.save(eval_dir_path.as_posix() + "D", D)
+        np.save(eval_dir_path.as_posix() + "I", I)
         # plt.imshow(D)
         # plt.show()
 
