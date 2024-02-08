@@ -15,9 +15,14 @@ docker_build:
 	docker build -t seqot -f Docker/Dockerfile .
 
 docker_run:
-	docker run --rm -v data:/data -v to_test:/to_test --gpus "device=0" --name seqot_container seqot
+	docker run --rm \
+	 -v ./data:/data \
+	 -v ./to_test:/to_test \
+	 --gpus "device=0" \
+	 --name seqot_container \
+	  seqot
 
-local: download_seqot_weights download_gem_weights gen_depth_data gen_sub_descriptors eval
+local: download_seqot_weights download_gem_weights debug gen_depth_data gen_sub_descriptors eval
 
 gen_depth_data:
 # args: --path <path to db>
@@ -28,3 +33,5 @@ gen_sub_descriptors:
 eval:
 	poetry run python eval.py --cfg config/config.yaml
 
+debug:
+	ls /data

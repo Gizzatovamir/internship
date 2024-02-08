@@ -145,4 +145,4 @@ if __name__ == "__main__":
         range_image_database_root=range_image_database_root,
         range_image_query_root=range_image_query_root,
     )
-    gen_descs.eval()
+    gen_descs.eval(pathlib.Path(args.dst_path))
