@@ -18,6 +18,11 @@ Repo for internship issues
 
 [Patch-NETVLAD](papers/Image_place_recognition/Patch-NetVLAD.md)
 
+## Trajectory correction after loop closure
+
+[comparison of loop closing techniques](https://webdiis.unizar.es/GRPTR/pubs/2008_Williams_RSS_IDA.pdf)
+[Loop Closure Prioritization ?](https://arxiv.org/pdf/2205.12402.pdf)
+
 Вопросы, которые возникли при прочтении статей:
 1. Что является глобальной задачей?
 2. Какие точности для выходных данных требуются? (К примеру, если нужно выдать координаты. Какая точность от них ожидается?)
